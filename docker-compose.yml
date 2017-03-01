@@ -1,0 +1,31 @@
+version: '2'
+services:
+  mariadb:
+    container_name: db
+    image: mariadb
+    restart: always
+    ports:
+      - 4306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: bruins
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    links:
+      - phpmyadmin
+    ports:
+      - 8080:80
+    restart: always
+
+  phpmyadmin:
+    container_name: pma
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mariadb:mysql
+    ports:
+      - 8181:80
+    restart: always
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: bruins
